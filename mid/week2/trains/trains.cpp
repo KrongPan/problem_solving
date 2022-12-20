@@ -1,13 +1,12 @@
 #include <iostream>
 using namespace std;
 #include <list>
-#include <array>
 
 int main() {
   int n,x,m;
   char order;
   cin >> n;
-  array<list<int>,100000> platform;
+  list<int> platform[100001];
   list<int>::iterator it;
   for (int i=0; i<n; i++) {
     cin >> order >> x >> m;
@@ -28,4 +27,5 @@ int main() {
       cout << *it << "\n";
     }
   }
+  return 0;
 }
