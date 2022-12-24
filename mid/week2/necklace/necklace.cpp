@@ -3,10 +3,9 @@
 using namespace std;
 
 int main() {
-  array<int,300000> lace;
-  array<int,300000> end;//เริ่มที่ตำเเหน่ง จบที่เลขที่เก็บ
-  array<int,300000> start;
-  int n,x,y,a,total;
+  array<int,300001> lace;
+  int x,y,a;
+  long long total,n;
   cin >> n;
   total = n*(n+1)/2;
   for (int i=1; i<n; i++) {
@@ -14,26 +13,13 @@ int main() {
     total-=x;
     if (lace[y] == 0) {
       lace[y] = x;
-      if (lace[x] == 0) {
-        end[y] = x;
-      } else {
-        end[y] = end[x];
-      }
-      if (start[y] != 0) {
-        start[end[y]] = start[y]; 
-        end[start[end[y]]] = end[y];
-      } else {
-        start[end[y]] = y;
-      } 
     } else {
       a = lace[y];
-      if (lace[x] == 0) {
-        end[y] = x;
-      } else {
-        
-      }
       lace[y] = x;
-      lace[end[x]] = a;
+      while(lace[x] != 0) {
+        x = lace[x];
+      }
+      lace[x] = a;
     }
   }  
   for(int i=0; i<n; i++) {
