@@ -16,9 +16,11 @@ int main() {
         be[count] = 0;
         fo[count] = count+1;
       } else if (M-j == 1) {
-
+        fo[count] = count-1;
+        be[count] = count-1;
       }else {
         fo[count] = count+1;
+        fo[count] = count-1;
         be[count+1] = count;
         be[count] = count-1;
       }
@@ -26,7 +28,7 @@ int main() {
     }
   }
   for (int i=0; i<N; i++) {
-    cout << robot;
+    //cout << robot;
     cin >> order;
     if (order == 'B') {
       if (robot != 1) {
@@ -40,17 +42,7 @@ int main() {
       cin >> c;
       temp = c;
       be[fo[robot]] = 0;
-      if (be[c] != 0) {
-        fo[robot] = c;
-        while (be[c] != 0) {
-          fo[c] = be[c];
-          c = be[c];
-        }
-        fo[c] = 0;
-      } else {
-        be[c] = robot;
-        fo[robot] = c;
-      }
+      fo[robot] = c;
       robot = temp;
     }
   }
