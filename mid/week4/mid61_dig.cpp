@@ -1,17 +1,16 @@
 #include <bits/stdc++.h>
-#include <Windows.h>
 using namespace std;
 
 vector<vector<char>> adj;
 vector<vector<bool>> visited;
 list<int> ans;
 bool dig = false;
-int n, q;
+int n, q, xs ,ys;
 int count = 0;
 bool dfs(int x, int y, int xe, int ye, int layer);
 int main()
 {
-    int xs, ys, xe, ye;
+    int xe, ye;
     char c;
     cin >> n >> q;
     cin >> xs >> ys >> xe >> ye;
@@ -49,7 +48,6 @@ int main()
 
 bool dfs(int x, int y, int xe, int ye, int layer)
 {
-    // Sleep(120);
     if (adj[x][y] == '*' || adj[x][y] == '#')
     {
         return false;
@@ -62,12 +60,16 @@ bool dfs(int x, int y, int xe, int ye, int layer)
     }
     if (visited[x][y] == false && adj[x][y] != '#')
     {
-        // cout << x + 1 << ',' << y + 1 << ',' << dig << '\n';
-        visited[x][y] = true;
+        cout << x + 1 << ',' << y + 1 << ',' << dig << '\n';
+        if(x!=xs-1 && y != ys-1)
+        {
+            visited[x][y] = true;
+        }
         if (x + 1 < n && visited[x + 1][y] == false)
         {
             if (adj[x + 1][y] == '*' && dig == false)
             {
+                visited[x+1][y] = true;
                 dig = true;
                 dfs(x + 2, y, xe, ye, layer + 2);
             }
@@ -80,6 +82,7 @@ bool dfs(int x, int y, int xe, int ye, int layer)
         {
             if (adj[x][y + 1] == '*' && dig == false)
             {
+                visited[x][y+1] = true;
                 dig = true;
                 dfs(x, y + 2, xe, ye, layer + 2);
             }
@@ -92,6 +95,7 @@ bool dfs(int x, int y, int xe, int ye, int layer)
         {
             if (adj[x][y - 1] == '*' && dig == false)
             {
+                visited[x][y-1] = true;
                 dig = true;
                 dfs(x, y - 2, xe, ye, layer - 2);
             }
@@ -104,6 +108,7 @@ bool dfs(int x, int y, int xe, int ye, int layer)
         {
             if (adj[x - 1][y] == '*' && dig == false)
             {
+                visited[x-1][y] = true;
                 dig = true;
                 dfs(x - 2, y, xe, ye, layer - 2);
             }
@@ -112,6 +117,10 @@ bool dfs(int x, int y, int xe, int ye, int layer)
                 dfs(x - 1, y, xe, ye, layer - 1);
             }
         }
+    }
+    if ((visited[xs][ys-1] == false && adj[xs][ys-1] != '#')|| (visited[xs-2][ys-1] == false && adj[xs-2][ys-1] != '#')||(visited[xs-1][ys] == false && adj[xs-1][ys] != '#')||(visited[xs-1][ys-2] == false && adj[xs-1][ys-2] != '#'))
+    {
+        dfs(xs-1, ys-1, xe, ye, 0);
     }
     return false;
 }
