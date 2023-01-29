@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-//#include <Windows.h>
+// #include <Windows.h>
 using namespace std;
 
 vector<vector<char>> adj;
@@ -28,33 +28,33 @@ int main()
         adj.push_back(temp);
         visited.push_back(temp2);
     }
-    
-    for (int i = 1; i < n-1; i++)
+
+    for (int i = 1; i < n - 1; i++)
     {
-        for (int j = 1; j < q-1; j++)
+        for (int j = 1; j < q - 1; j++)
         {
-            if (adj[i][j] == '.' && i!=xs-1 && j!= ys-1 && i!=xe-1 && j!=ye-1)
+            if (adj[i][j] == '.' && i != xs - 1 && j != ys - 1 && i != xe - 1 && j != ye - 1)
             {
-                if (adj[i-1][j-1] == '.' && adj[i][j-1] == '.' && adj[i-1][j] == '.')
+                if (adj[i - 1][j - 1] == '.' && adj[i][j - 1] == '.' && adj[i - 1][j] == '.')
                 {
                     adj[i][j] = '#';
                 }
-                else if (adj[i-1][j+1] == '.' && adj[i][j+1] == '.' && adj[i-1][j] == '.')
+                else if (adj[i - 1][j + 1] == '.' && adj[i][j + 1] == '.' && adj[i - 1][j] == '.')
                 {
                     adj[i][j] = '#';
                 }
-                else if (adj[i+1][j+1] == '.' && adj[i][j+1] == '.' && adj[i+1][j] == '.')
+                else if (adj[i + 1][j + 1] == '.' && adj[i][j + 1] == '.' && adj[i + 1][j] == '.')
                 {
                     adj[i][j] = '#';
                 }
-                else if (adj[i+1][j-1] == '.' && adj[i][j-1] == '.' && adj[i+1][j] == '.')
+                else if (adj[i + 1][j - 1] == '.' && adj[i][j - 1] == '.' && adj[i + 1][j] == '.')
                 {
                     adj[i][j] = '#';
                 }
             }
         }
     }
-    /*
+ /*
     for (int i = 0; i < n; i++)
     {
         for (int j = 0; j < q; j++)
@@ -63,7 +63,16 @@ int main()
         }
         cout << '\n';
     }
-    */
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < q; j++)
+        {
+            cout << visited[i][j];
+        }
+        cout << '\n';
+    }
+*/
     dfs(xs - 1, ys - 1, xe - 1, ye - 1, 0, visited, false);
     if (ans.size() == 0)
     {
@@ -85,8 +94,8 @@ int main()
 
 bool dfs(int x, int y, int xe, int ye, int layer, vector<vector<bool>> visited, bool dig)
 {
-    //Sleep(75);
-    //cout << x + 1 << ',' << y + 1 << ',' << dig << '\n';
+    // Sleep(75);
+    // cout << x + 1 << ',' << y + 1 << ',' << dig << '\n';
     if (adj[x][y] == '*' || adj[x][y] == '#')
     {
         return false;
@@ -99,7 +108,6 @@ bool dfs(int x, int y, int xe, int ye, int layer, vector<vector<bool>> visited, 
     if (visited[x][y] == false && adj[x][y] != '#')
     {
 
-        
         visited[x][y] = true;
         if (adj[x + 1][y] == '*' && dig == false)
         {
@@ -121,13 +129,12 @@ bool dfs(int x, int y, int xe, int ye, int layer, vector<vector<bool>> visited, 
             // visited[x - 1][y] = true;
             dfs(x - 2, y, xe, ye, layer + 2, visited, true);
         }
-
         if (x + 1 < n && visited[x + 1][y] == false && adj[x + 1][y] != '#')
         {
             // cout << "[a]";
             dfs(x + 1, y, xe, ye, layer + 1, visited, dig);
         }
-        if (y + 1 < n && visited[x][y + 1] == false && adj[x][y + 1] != '#')
+        if (y + 1 < q && visited[x][y + 1] == false && adj[x][y + 1] != '#')
         {
             // cout<< "[b]";
             dfs(x, y + 1, xe, ye, layer + 1, visited, dig);
@@ -143,6 +150,6 @@ bool dfs(int x, int y, int xe, int ye, int layer, vector<vector<bool>> visited, 
             dfs(x - 1, y, xe, ye, layer + 1, visited, dig);
         }
     }
-    //cout << "return";
+    // cout << "return";
     return false;
 }

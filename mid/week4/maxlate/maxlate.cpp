@@ -7,14 +7,14 @@ int main()
     int total = 0;
     int max = 0;
     cin >> n;
-    array<int,100000> p = {0};
+    array<int,10000000> p = {0};
     int td = 0;
     for (int i = 1; i < n + 1; i++)
     {
         cin >> d >> c;
         p[d] = c;
     }
-    for (int i = 1; i < 100000 + 1; i++)
+    for (int i = 1; i < 10000000 + 1; i++)
     {
         td += p[i];
         if (p[i] != 0 && td - i - 10 > 0)
