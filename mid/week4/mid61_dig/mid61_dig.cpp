@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#include <Windows.h>
+//#include <Windows.h>
 using namespace std;
 
 vector<vector<char>> adj;

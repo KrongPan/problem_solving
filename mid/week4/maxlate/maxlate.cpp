@@ -5,15 +5,16 @@ int main()
 {
     int n, d, c;
     int total = 0;
+    int max = 0;
     cin >> n;
-    int p[10000];
+    array<int,100000> p = {0};
     int td = 0;
     for (int i = 1; i < n + 1; i++)
     {
         cin >> d >> c;
         p[d] = c;
     }
-    for (int i = 1; i < 10000 + 1; i++)
+    for (int i = 1; i < 100000 + 1; i++)
     {
         td += p[i];
         if (p[i] != 0 && td - i - 10 > 0)
@@ -22,8 +23,13 @@ int main()
             if (total < (td - i - 10) * 1000)
             {
                 total = (td - i - 10) * 1000;
+                //cout << total << '\n';
+                if (total > max)
+                {
+                    max = total;
+                }
             }
         }
     }
-    cout << total;
+    cout << max;
 }
