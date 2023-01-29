@@ -1,19 +1,21 @@
 #include <bits/stdc++.h>
+// #include <Windows.h>
 using namespace std;
 
 vector<vector<char>> adj;
-vector<vector<bool>> visited;
+
 list<int> ans;
 bool dig = false;
-int n, q, xs ,ys;
+int n, q;
 int count = 0;
-bool dfs(int x, int y, int xe, int ye, int layer);
+bool dfs(int x, int y, int xe, int ye, int layer, vector<vector<bool>> visited);
 int main()
 {
-    int xe, ye;
+    int xs, ys, xe, ye;
     char c;
     cin >> n >> q;
     cin >> xs >> ys >> xe >> ye;
+    vector<vector<bool>> visited;
     for (int i = 0; i < n; i++)
     {
         vector<bool> temp2;
@@ -27,7 +29,7 @@ int main()
         adj.push_back(temp);
         visited.push_back(temp2);
     }
-    dfs(xs - 1, ys - 1, xe - 1, ye - 1, 0);
+    dfs(xs - 1, ys - 1, xe - 1, ye - 1, 0, visited);
     if (ans.size() == 0)
     {
         cout << -1;
@@ -46,8 +48,9 @@ int main()
     }
 }
 
-bool dfs(int x, int y, int xe, int ye, int layer)
+bool dfs(int x, int y, int xe, int ye, int layer, vector<vector<bool>> visited)
 {
+    // Sleep(75);
     if (adj[x][y] == '*' || adj[x][y] == '#')
     {
         return false;
@@ -60,67 +63,65 @@ bool dfs(int x, int y, int xe, int ye, int layer)
     }
     if (visited[x][y] == false && adj[x][y] != '#')
     {
-        cout << x + 1 << ',' << y + 1 << ',' << dig << '\n';
-        if(x!=xs-1 && y != ys-1)
+        // cout << x + 1 << ',' << y + 1 << ',' << dig << '\n';
+        visited[x][y] = true;
+        if (x + 1 < n && visited[x + 1][y] == false && adj[x + 1][y] != '#')
         {
-            visited[x][y] = true;
-        }
-        if (x + 1 < n && visited[x + 1][y] == false)
-        {
+            // cout << "[a]";
             if (adj[x + 1][y] == '*' && dig == false)
             {
-                visited[x+1][y] = true;
+                // visited[x + 1][y] = true;
                 dig = true;
-                dfs(x + 2, y, xe, ye, layer + 2);
+                dfs(x + 2, y, xe, ye, layer + 2, visited);
             }
             else if (adj[x + 1][y] != '*')
             {
-                dfs(x + 1, y, xe, ye, layer + 1);
+                dfs(x + 1, y, xe, ye, layer + 1, visited);
             }
         }
-        if (y + 1 < n && visited[x][y + 1] == false)
+        if (y + 1 < n && visited[x][y + 1] == false && adj[x][y + 1] != '#')
         {
+            // cout<< "[b]";
             if (adj[x][y + 1] == '*' && dig == false)
             {
-                visited[x][y+1] = true;
+                // visited[x][y + 1] = true;
                 dig = true;
-                dfs(x, y + 2, xe, ye, layer + 2);
+                dfs(x, y + 2, xe, ye, layer + 2, visited);
             }
             else if (adj[x][y + 1] != '*')
             {
-                dfs(x, y + 1, xe, ye, layer + 1);
+                dfs(x, y + 1, xe, ye, layer + 1, visited);
             }
         }
-        if (y - 1 >= 0 && visited[x][y - 1] == false)
+        if (y - 1 >= 0 && visited[x][y - 1] == false && adj[x][y - 1] != '#')
         {
+            // cout << "[c]";
             if (adj[x][y - 1] == '*' && dig == false)
             {
-                visited[x][y-1] = true;
+                // visited[x][y - 1] = true;
                 dig = true;
-                dfs(x, y - 2, xe, ye, layer - 2);
+                dfs(x, y - 2, xe, ye, layer + 2, visited);
             }
             else if (adj[x][y - 1] != '*')
             {
-                dfs(x, y - 1, xe, ye, layer - 1);
+                dfs(x, y - 1, xe, ye, layer + 1, visited);
             }
         }
-        if (x - 1 >= 0 && visited[x - 1][y] == false)
+        if (x - 1 >= 0 && visited[x - 1][y] == false && adj[x - 1][y] != '#')
         {
+            // cout << "[d]";
             if (adj[x - 1][y] == '*' && dig == false)
             {
-                visited[x-1][y] = true;
+                // visited[x - 1][y] = true;
                 dig = true;
-                dfs(x - 2, y, xe, ye, layer - 2);
+                dfs(x - 2, y, xe, ye, layer + 2, visited);
             }
             else if (adj[x - 1][y] != '*')
             {
-                dfs(x - 1, y, xe, ye, layer - 1);
+                dfs(x - 1, y, xe, ye, layer + 1, visited);
             }
         }
     }
-    if ((visited[xs][ys-1] == false && adj[xs][ys-1] != '#')|| (visited[xs-2][ys-1] == false && adj[xs-2][ys-1] != '#')||(visited[xs-1][ys] == false && adj[xs-1][ys] != '#')||(visited[xs-1][ys-2] == false && adj[xs-1][ys-2] != '#'))
-    {
-        dfs(xs-1, ys-1, xe, ye, 0);
-    }
+    // cout << "return";
     return false;
 }
