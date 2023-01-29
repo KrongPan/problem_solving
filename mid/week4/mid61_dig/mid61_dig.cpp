@@ -54,25 +54,25 @@ int main()
             }
         }
     }
- /*
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < q; j++)
-        {
-            cout << adj[i][j];
-        }
-        cout << '\n';
-    }
+    /*
+       for (int i = 0; i < n; i++)
+       {
+           for (int j = 0; j < q; j++)
+           {
+               cout << adj[i][j];
+           }
+           cout << '\n';
+       }
 
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < q; j++)
-        {
-            cout << visited[i][j];
-        }
-        cout << '\n';
-    }
-*/
+       for (int i = 0; i < n; i++)
+       {
+           for (int j = 0; j < q; j++)
+           {
+               cout << visited[i][j];
+           }
+           cout << '\n';
+       }
+   */
     dfs(xs - 1, ys - 1, xe - 1, ye - 1, 0, visited, false);
     if (ans.size() == 0)
     {
