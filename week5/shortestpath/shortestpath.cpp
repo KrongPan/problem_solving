@@ -8,7 +8,7 @@ int main()
 {
     int m, a, b, w;
     cin >> n >> m;
-    int distance[n + 1];
+    int distance[n];
     for (int i = 0; i < n + 1; i++)
     {
         distance[i] = 2000000000;
@@ -18,8 +18,14 @@ int main()
     for (int i = 0; i < m; i++)
     {
         cin >> a >> b >> w;
-        adj[a].push_back(pair(b, w));
-        adj[b].push_back(pair(a, w));
+        pair<int, int> temp;
+        temp.first = b;
+        temp.second = w;
+        adj[a].push_back(temp);
+        pair<int, int> temp2;
+        temp2.first = a;
+        temp2.second = w;
+        adj[b].push_back(temp2);
     }
     /*
     for (auto i:adj) //print adj
@@ -32,6 +38,7 @@ int main()
     }
     */
     shortestPath(1, n, distance);
+    return 0;
 }
 int shortestPath(int s, int e, int distance[])
 {
@@ -57,7 +64,7 @@ int shortestPath(int s, int e, int distance[])
         seen[u] = true;
         for (auto i : adj[u])
         {
-            if (distance[u] + i.second < distance[i.first])
+            if ((distance[u] + i.second < distance[i.first]) && (i.first != parent[u]))
             {
                 distance[i.first] = distance[u] + i.second;
                 parent[i.first] = u;
