@@ -1,1 +1,0 @@
-list<int>::iterator it;
