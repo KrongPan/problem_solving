@@ -43,15 +43,17 @@ int main()
 int shortestPath(int s, int e, int distance[])
 {
     bool seen[n + 1] = {false};
+    set<int> find;
     int parent[n + 1];
     parent[s] = 0;
     distance[s] = 0;
+    find.insert(s);
     while (s != e)
     {
         // cout << s << '\n';
         int min = 2000000000;
         int u = 0;
-        for (int i = 1; i < n + 1; i++)
+        for (auto i:find)
         {
             if (distance[i] < min && seen[i] == false)
             {
@@ -60,10 +62,12 @@ int shortestPath(int s, int e, int distance[])
                 u = i;
             }
         }
+        find.erase(u);
         s = u;
         seen[u] = true;
         for (auto i : adj[u])
         {
+            find.insert(i.first);
             if ((distance[u] + i.second < distance[i.first]) && (i.first != parent[u]))
             {
                 distance[i.first] = distance[u] + i.second;
