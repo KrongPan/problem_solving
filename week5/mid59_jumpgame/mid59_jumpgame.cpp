@@ -37,22 +37,24 @@ void dfs_jump(int x, int y, int before)
     {
         return;
     }
-    if (x == n - 1 && y == n - 1)
+    if (table[x][y] - k > before)
     {
-        is_true = true;
         return;
     }
     if (x >= n || y >= n || x < 0 || y < 0 || seen[x][y])
     {
         return;
     }
-    seen[x][y] = true;
-    if (table[x][y] <= before + k)
+    if (x == n - 1 && y == n - 1)
     {
-        dfs_jump(x, y + 1, table[x][y]);
-        dfs_jump(x + 1, y, table[x][y]);
-        dfs_jump(x - 1, y, table[x][y]);
-        dfs_jump(x, y - 1, table[x][y]);
+        is_true = true;
+        return;
     }
+    seen[x][y] = true;
+
+    dfs_jump(x + 1, y, table[x][y]);
+    dfs_jump(x - 1, y, table[x][y]);
+    dfs_jump(x, y + 1, table[x][y]);
+    dfs_jump(x, y - 1, table[x][y]);
     return;
 }
