@@ -8,7 +8,7 @@ int main()
 {
     int m, a, b, w;
     cin >> n >> m;
-    int distance[n+1];
+    int distance[n + 1];
     for (int i = 0; i < n + 1; i++)
     {
         distance[i] = 2000000000;
@@ -25,57 +25,42 @@ int main()
         temp.first = a;
         adj[b].push_back(temp);
     }
-    /*
-    for (auto i:adj) //print adj
-    {
-        for (auto j:i)
-        {
-            cout << j.first << ',' << j.second << ' ';
-        }
-        cout << '\n';
-    }
-    */
     shortestPath(1, n, distance);
     return 0;
 }
 
 int shortestPath(int s, int e, int distance[])
 {
-    int parent[n];
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
     bool seen[n + 1] = {false};
-    set<int> find;
-    parent[s] = 0;
     distance[s] = 0;
-    find.insert(s);
-    while (s != e)
+    pq.push({0, s});
+    while (!pq.empty())
     {
-        //cout << distance[n];
-        int min = 2000000001;
-        int u = 0;
-        for (auto i:find)
+        int u = pq.top().second;
+        if (distance[u] > pq.top().first)
         {
-            if (distance[i] < min && seen[i] == false)
-            {
-                // cout << "yay";
-                min = distance[i];
-                u = i;
-            }
+            distance[u] = pq.top().first;
         }
-        find.erase(u);
-        s = u;
-        //cout << distance[u];
+        // cout << u << " ";
+        pq.pop();
+        if (seen[u])
+        {
+            continue;
+        }
         seen[u] = true;
         for (auto i : adj[u])
         {
-            //cout << i.first;
-            find.insert(i.first);
-            if ((distance[u] + i.second < distance[i.first]) && parent[u] != i.first)
+            int v = i.first;
+            int w = i.second;
+            if (distance[v] > distance[u] + w)
             {
-                distance[i.first] = distance[u] + i.second;
-                parent[i.first] = u;
+                distance[v] = distance[u] + w;
+                //cout << distance[v] << ' ';
+                pq.push({distance[v], v});
             }
         }
-        //cout << '\n';
+        // cout << '\n';
     }
     cout << distance[e];
     return 1;
