@@ -2,13 +2,13 @@
 using namespace std;
 
 int shortestPath(int s, int e, int distance[]);
-vector<list<pair<int, int>>> adj;
 int n;
+vector<list<pair<int, int>>> adj;
 int main()
 {
     int m, a, b, w;
     cin >> n >> m;
-    int distance[n];
+    int distance[n+1];
     for (int i = 0; i < n + 1; i++)
     {
         distance[i] = 2000000000;
@@ -22,10 +22,8 @@ int main()
         temp.first = b;
         temp.second = w;
         adj[a].push_back(temp);
-        pair<int, int> temp2;
-        temp2.first = a;
-        temp2.second = w;
-        adj[b].push_back(temp2);
+        temp.first = a;
+        adj[b].push_back(temp);
     }
     /*
     for (auto i:adj) //print adj
@@ -40,6 +38,7 @@ int main()
     shortestPath(1, n, distance);
     return 0;
 }
+
 int shortestPath(int s, int e, int distance[])
 {
     int parent[n];
@@ -48,9 +47,9 @@ int shortestPath(int s, int e, int distance[])
     parent[s] = 0;
     distance[s] = 0;
     find.insert(s);
-    while (true)
+    while (s != e)
     {
-        cout << s;
+        //cout << distance[n];
         int min = 2000000001;
         int u = 0;
         for (auto i:find)
@@ -68,16 +67,15 @@ int shortestPath(int s, int e, int distance[])
         seen[u] = true;
         for (auto i : adj[u])
         {
-            cout << i.first;
+            //cout << i.first;
             find.insert(i.first);
             if ((distance[u] + i.second < distance[i.first]) && parent[u] != i.first)
             {
-                
                 distance[i.first] = distance[u] + i.second;
                 parent[i.first] = u;
             }
         }
-        cout << '\n';
+        //cout << '\n';
     }
     cout << distance[e];
     return 1;
