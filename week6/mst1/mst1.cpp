@@ -1,42 +1,82 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+int kruskal();
+void union_compress(int A, int B);
+int find_parent(int node);
+
+int parent[1000];
+int Rank[1000];
+pair<int, pair<int, int>> graph[100000];
+int n, m;
 int main()
 {
-    int n, m,a,b,w;
+    int a, b, w;
     cin >> n >> m;
-    vector<vector<pair<int, int>>> tree;
     for (int i = 0; i < n; i++)
     {
-        vector<pair<int, int>> temp;
-        tree.push_back(temp);
+        parent[i] = i;
+        Rank[i] = 1;
     }
     for (int i = 0; i < m; i++)
     {
         cin >> a >> b >> w;
-        tree[a-1].push_back(pair(b-1,w));
+        graph[i].second.first = a - 1;
+        graph[i].second.second = b - 1;
+        graph[i].first = w;
     }
-/////////////////////////////////////////////////////////////////////////////
-    set<int> seen;
-    int count = 0;
-    int node = 0;
-    for (int i = 0; i < n; i++)
-    {
-        cout << node << '\n';
-        int min = 999999;
-        pair<int,int> temp;
-        for(auto j: tree[node])
+    sort(graph, graph + m);
+    /*
+        for(int i = 0; i < 1000; i++)
         {
-            if(j.second < min && seen.end() == (seen.find(j.first)))
-            {
-                min = j.second;
-                temp = j;
-            }
+            cout << parent[i] << '\n';
         }
-        count += temp.second;
-        seen.insert(temp.first);
-        node = temp.first;
-    }
-    cout << count;
+    */
+    //////////////////////////////////////////////////////////////kruskal
+    cout << kruskal();
+    /*
+        for (int i = 0; i < n; i++)
+        {
+            cout << parent[i] << '\n';
+        }
+    */
 }
 
+int kruskal()
+{
+    int count = 0;
+    int c = 1;
+    for (auto i : graph)
+    {
+        int A = i.second.first, B = i.second.second, W = i.first;
+        if (find_parent(A) != find_parent(B))
+        {
+            union_compress(A, B);
+            count += W;
+        }
+    }
+    return count;
+}
+int find_parent(int v)
+{
+    while (parent[v] != v)
+    {
+        v = parent[v];
+    }
+    return v;
+}
+
+void union_compress(int A, int B)
+{
+    int temp;
+    A = find_parent(A);
+    B = find_parent(B);
+    if (Rank[A] > Rank[B])
+    {
+        temp = A;
+        A = B;
+        B = temp;
+    }
+    parent[A] = B;
+    Rank[A] += Rank[B];
+}
