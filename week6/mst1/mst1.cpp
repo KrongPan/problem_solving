@@ -9,6 +9,7 @@ int parent[1000];
 int Rank[1000];
 pair<int, pair<int, int>> graph[100000];
 int n, m;
+
 int main()
 {
     int a, b, w;
@@ -26,20 +27,9 @@ int main()
         graph[i].first = w;
     }
     sort(graph, graph + m);
-    /*
-        for(int i = 0; i < 1000; i++)
-        {
-            cout << parent[i] << '\n';
-        }
-    */
     //////////////////////////////////////////////////////////////kruskal
     cout << kruskal();
-    /*
-        for (int i = 0; i < n; i++)
-        {
-            cout << parent[i] << '\n';
-        }
-    */
+    return 0;
 }
 
 int kruskal()
@@ -48,8 +38,8 @@ int kruskal()
     int c = 1;
     for (auto i : graph)
     {
-        int A = i.second.first, B = i.second.second, W = i.first;
-        if (find_parent(A) != find_parent(B))
+        int A = find_parent(i.second.first), B = find_parent(i.second.second), W = i.first;
+        if (A != B)
         {
             union_compress(A, B);
             count += W;
@@ -69,8 +59,6 @@ int find_parent(int v)
 void union_compress(int A, int B)
 {
     int temp;
-    A = find_parent(A);
-    B = find_parent(B);
     if (Rank[A] > Rank[B])
     {
         temp = A;
