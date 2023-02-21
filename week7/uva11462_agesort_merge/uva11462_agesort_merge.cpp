@@ -1,19 +1,26 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+
 int n;
 vector<int> Merge_sort(vector<int> data, int n);
-vector<int> merge(vector<int> A, vector<int> B);
-vector<vector<int>> ans;
+vector<int> merge(vector<int> A, vector<int> B, int na, int nb);
+vector<int> ans;
 
 int main()
 {
+    
+    vector<int> data_t;
     ios::sync_with_stdio(false);
     cin.tie(NULL);
-    vector<int> data_t;
-    cin >> n;
-    while (n)
+    while (true)
     {
+
+        cin >> n;
+        if(n == 0)
+        {
+            break;
+        }
         int s;
         data_t.clear();
         for (int i = 0; i < n; i++)
@@ -21,73 +28,55 @@ int main()
             cin >> s;
             data_t.push_back(s);
         }
-        ans.push_back(Merge_sort(data_t, n));
-        cin >> n;
-    }
-    for (int i = 0; i < ans.size(); i++)
-    {
-        for (int j = 0; j < ans[i].size(); j++)
+        ans = Merge_sort(data_t, n);
+        for(int i = 0; i < n-1; i++)
         {
-            cout << ans[i][j];
-            if (j != ans[i].size() - 1)
-            {
-                cout << ' ';
-            }
+            cout << ans[i] << ' ';
         }
-        if (i != ans.size() - 1)
-        {
-            cout << '\n';
-        }
+        cout << ans[n-1] << ' ' << '\n';
     }
+
+    return 0;
 }
 
-vector<int> merge(vector<int> A, vector<int> B)
+vector<int> merge(vector<int> A, vector<int> B, int na, int nb)
 {
     vector<int> C;
-    while (A.size() != 0 && B.size() != 0)
+    while (na != 0 && nb != 0)
     {
         if (A[0] > B[0])
         {
             C.push_back(B[0]);
             B.erase(B.begin());
+            nb--;
         }
         else
         {
             C.push_back(A[0]);
             A.erase(A.begin());
+            na--;
         }
     }
-    while (A.size() != 0)
+    while (na != 0)
     {
         C.push_back(A[0]);
         A.erase(A.begin());
+        na--;
     }
-    while (B.size() != 0)
+    while (nb != 0)
     {
         C.push_back(B[0]);
         B.erase(B.begin());
+        nb--;
     }
     return C;
 }
 
 vector<int> Merge_sort(vector<int> data,int n)
 {
-    if (n == 1)
+    if (n <= 1)
     {
         return data;
-    }
-    vector<int> data_a;
-    vector<int> data_b;
-    for (int i = 0; i < n; i++)
-    {
-        if(i < n/2)
-        {
-            data_a.push_back(data[i]);
-        }
-        else
-        {
-            data_b.push_back(data[i]);
-        }
     }
     int na,nb;
     if(n%2 == 0)
@@ -100,7 +89,9 @@ vector<int> Merge_sort(vector<int> data,int n)
         na = n/2;
         nb = na + 1;
     }
+    vector<int> data_a(&data[0],&data[na]);
+    vector<int> data_b(&data[na],&data[n]);
     data_a = Merge_sort(data_a, na);
     data_b = Merge_sort(data_b, nb);
-    return merge(data_a, data_b);
+    return merge(data_a, data_b, na, nb);
 }
