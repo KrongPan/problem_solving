@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <list>
+#include <queue>
 using namespace std;
 
 void bfs(int s);
@@ -9,6 +10,7 @@ const int MAX_N = 100000;
 
 bool seen_c[MAX_N];
 int layer1[MAX_N];
+
 bool magic[MAX_N];
 int ans = 1;
 
@@ -53,11 +55,11 @@ int main()
 
 void bfs(int s)
 {
-    list<int> Q;
+    queue<int> Q;
     bool is_magic;
     bool seen[MAX_N];
     int layer2[MAX_N];
-    Q.push_back(s);
+    Q.push(s);
     seen[s] = true;
     seen_c[s] = 1;
     if(s == 0)
@@ -75,7 +77,7 @@ void bfs(int s)
     {
         int u = Q.front();
         //cout << '[' << u+1 << ',' << layer2[u] << ']' << '\n';
-        Q.pop_front();
+        Q.pop();
         bool is_die = 0;
         if(layer2[u] > h)
         {
@@ -88,7 +90,7 @@ void bfs(int s)
         for (int d = 0; d < deg[u]; d++)
         {
             int v = adj[u][d].first;
-            if(magic[v])
+            if(magic[v] && !is_magic)
             {
                 //cout << "go_to";
                 magic[v] = 0;
@@ -102,7 +104,7 @@ void bfs(int s)
             {
                 if (!seen[v] && adj[u][d].second)
                 {
-                    Q.push_back(v);
+                    Q.push(v);
                     seen[v] = true;
                     if(!seen_c[v])
                     {
@@ -116,7 +118,7 @@ void bfs(int s)
             {
                 if (!seen[v] && (is_magic || !adj[u][d].second))
                 {
-                    Q.push_back(v);
+                    Q.push(v);
                     seen[v] = true;
                     layer2[v] = layer2[u] + 1;
                     if(!seen_c[v] && layer2[v] <= h)
