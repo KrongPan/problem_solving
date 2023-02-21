@@ -1,23 +1,20 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-
 int n;
-vector<int> Merge_sort(vector<int> data, int n);
-vector<int> merge(vector<int> A, vector<int> B, int na, int nb);
+void Merge_sort(int l, int r);
+void merge(int l, int m, int r);
 vector<int> ans;
 
+vector<int> data_t;
 int main()
 {
-    
-    vector<int> data_t;
     ios::sync_with_stdio(false);
     cin.tie(NULL);
     while (true)
     {
-
         cin >> n;
-        if(n == 0)
+        if (n == 0)
         {
             break;
         }
@@ -28,70 +25,66 @@ int main()
             cin >> s;
             data_t.push_back(s);
         }
-        ans = Merge_sort(data_t, n);
-        for(int i = 0; i < n-1; i++)
+        Merge_sort(0, n-1);
+        for (int i = 0; i < n - 1; i++)
         {
-            cout << ans[i] << ' ';
+            cout << data_t[i] << ' ';
         }
-        cout << ans[n-1] << ' ' << '\n';
+        cout << data_t[n - 1] << '\n';
     }
-
     return 0;
 }
-
-vector<int> merge(vector<int> A, vector<int> B, int na, int nb)
+void merge(int l, int m, int r)
 {
-    vector<int> C;
-    while (na != 0 && nb != 0)
+    const int n1 = m - l + 1;
+    const int n2 = r - m;
+    int L[n1], R[n2];
+    for (int i = 0; i < n1; i++)
     {
-        if (A[0] > B[0])
+        L[i] = data_t[l + i];
+    }
+    for (int j = 0; j < n2; j++)
+    {
+        R[j] = data_t[m + 1 + j];
+    }
+    int i, j, k;
+    i = 0;
+    j = 0;
+    k = l;
+    while (i < n1 && j < n2)
+    {
+        if (L[i] <= R[j])
         {
-            C.push_back(B[0]);
-            B.erase(B.begin());
-            nb--;
+            data_t[k] = L[i];
+            i++;
         }
         else
         {
-            C.push_back(A[0]);
-            A.erase(A.begin());
-            na--;
+            data_t[k] = R[j];
+            j++;
         }
+        k++;
     }
-    while (na != 0)
+    while (i < n1)
     {
-        C.push_back(A[0]);
-        A.erase(A.begin());
-        na--;
+        data_t[k] = L[i];
+        i++;
+        k++;
     }
-    while (nb != 0)
+    while (j < n2)
     {
-        C.push_back(B[0]);
-        B.erase(B.begin());
-        nb--;
+        data_t[k] = R[j];
+        j++;
+        k++;
     }
-    return C;
 }
-
-vector<int> Merge_sort(vector<int> data,int n)
+void Merge_sort(int l, int r)
 {
-    if (n <= 1)
+    if (l < r)
     {
-        return data;
+        int m = l + (r - l) / 2;
+        Merge_sort(l, m);
+        Merge_sort(m + 1, r);
+        merge(l, m, r);
     }
-    int na,nb;
-    if(n%2 == 0)
-    {
-        na = n/2;
-        nb = na;
-    }
-    else
-    {
-        na = n/2;
-        nb = na + 1;
-    }
-    vector<int> data_a(&data[0],&data[na]);
-    vector<int> data_b(&data[na],&data[n]);
-    data_a = Merge_sort(data_a, na);
-    data_b = Merge_sort(data_b, nb);
-    return merge(data_a, data_b, na, nb);
 }
