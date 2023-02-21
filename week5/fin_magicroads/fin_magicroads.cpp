@@ -5,7 +5,7 @@ using namespace std;
 
 void bfs(int s);
 
-const int MAX_N = 100010;
+const int MAX_N = 100000;
 
 bool seen_c[MAX_N];
 int layer1[MAX_N];
