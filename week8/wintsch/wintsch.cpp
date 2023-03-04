@@ -14,13 +14,16 @@ int main()
     {
         cin >> a >> b >> w;
         pair<int,pair<int,int>> temp;
-        A[i] = 0;
         a--;
         b--;
         temp.first = a;
         temp.second.first = b;
         temp.second.second = w;
         s_time.insert(temp);
+    }
+    for(auto i: s_time)
+    {
+        cout << i.first << ',' << i.second.first << ',' << i.second.first << '\n';
     }
     set<pair<int,pair<int,int>>>::iterator it = s_time.begin();
     A[0] = it->second.second;
@@ -30,22 +33,27 @@ int main()
 
         for (int j = 0; j < i; j++)
         {
-            it = s_time.begin();
-            advance(it,j);
-            if (A[j] > max && i >= it->second.first)
+            set<pair<int,pair<int,int>>>::iterator it1 = s_time.begin();
+            advance(it1,j);
+            set<pair<int,pair<int,int>>>::iterator it2 = s_time.begin();
+            advance(it2,i);
+            if (A[j] > max && it2->first >= it1->second.first)
             {
                 max = A[j];
             }
         }
-        //cout << '[' << max << ']';
+        cout << '[' << max << ']';
         it = s_time.begin();
         advance(it,i);
         A[i] = max + it->second.second;
         if (A[i] > A[ans])
         {
             ans = i;
-            
         }
+    }
+    for(auto i: A)
+    {
+        cout << i << ' ' << '\n';
     }
     cout << A[ans] << '\n';
     int p = ans;
