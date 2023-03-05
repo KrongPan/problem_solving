@@ -3,55 +3,53 @@ using namespace std;
 
 int main()
 {  
-    int n,m,i,j;
-    cin >> n >> m;
-    vector<bool> done(n+1 ,false);
-    vector<int> ans;
-    for (int i  = 0; i< n+1;i++)
-    {
-        ans.push_back(0);
-    }
+    int n,m,a,b;
+    
     while(true)
     {
-        cin >> i >> j;
-        
-        if (i == 0 && j == 0)
+        cin >> n >> m;
+        if(n == 0 && m == 0)
         {
-            break;
+            return 0;
         }
-        if(ans[i] == 0)
+        array<set<int>,101> w;
+        bool seen[101];
+        queue<int> ans;
+        queue<int> q;
+        for(int i = 0; i < m; i++)
         {
-            ans[i] = j;
+            cin >> a >> b;
+            w[a].insert(b);
+            seen[b] = 1;
         }
-        else
+        for(int i = 1; i <= n; i++)
         {
-            if (done[j] != true)
+            if(seen[i] == 0)
             {
-                while(ans[i] != 0)
+                q.push(i);
+                seen[i] = 1;
+            }
+        }
+        while(q.size() != 0)
+        {
+            int u = q.front();
+            q.pop();
+            if(seen[u])
+            {
+                seen[u] = 0;
+                ans.push(u);
+                for(auto j: w[u])
                 {
-                    i = ans[i];
+                    q.push(j);
                 }
-                ans[i] = j;
             }
         }
-        done[j] = true;
-    }
-    
-    for (int i = 0; i < n+1; i++)
-    {
-        //cout << done[i];
-        if(done[i] == false)
+        while(ans.size() != 1)
         {
-            int j = i;
-            while(ans[j] != 0)
-            {
-                cout << j << ' ';
-                j = ans[j];
-            }
-            if( j!=0)
-            {
-                cout << j << ' ';
-            }
+            cout << ans.front() << ' ';
+            ans.pop();
         }
+        cout << ans.front();
+        cout << '\n';
     }
 }
