@@ -1,99 +1,102 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-vector<vector<char>> adj;
-vector<vector<bool>> visited;
-int n;
-bool dfs(int x, int y, int xe, int ye, bool door, vector<vector<bool>> visited);
+
+bool seen[21][21];
+int a,b;
+int n,q;
+bool gogo(int r,int c,int o,char m[][21]);
 int main()
 {
-    int q, xs, ys, xe, ye;
-    char c;
     cin >> n >> q;
-    vector<vector<bool>> visited;
-    for (int i = 0; i < n; i++)
+    char m[21][21];
+    for(int i = 1; i <= n; i++)
     {
-        vector<bool> temp2;
-        vector<char> temp;
-        for (int j = 0; j < n; j++)
+        for(int j = 1; j <= n; j++)
         {
-            cin >> c;
-            temp.push_back(c);
-            temp2.push_back(false);
+            cin >> m[i][j];
         }
-        adj.push_back(temp);
-        visited.push_back(temp2);
     }
-    list<string> ans;
-    for (int i = 0; i < q; i++)
+    int r,c;
+    for(int i = 0; i < q; i++)
     {
-
-        cin >> xs >> ys >> xe >> ye;
-        if (dfs(xs - 1, ys - 1, xe - 1, ye - 1, false, visited) == true)
+        cin >> r >> c >> a >> b;
+        char t[21][21];
+        for(int i = 1; i <= n; i++)
         {
-            ans.push_back("yes");
+            for(int j = 1; j <= n; j++)
+            {
+                t[i][j] = m[i][j];
+                seen[i][j] = 0;
+            }
+        }
+        if(gogo(r,c,0,t))
+        {
+            cout << "yes" << '\n';
         }
         else
         {
-            ans.push_back("no");
+            cout << "no" << '\n';
         }
-        // cout << "-------------------------------";
-    }
-    for (auto a : ans)
-    {
-        cout << a << '\n';
     }
 }
-
-bool dfs(int x, int y, int xe, int ye, bool door, vector<vector<bool>> visited)
+bool gogo(int r,int c,int o,char m[][21])
 {
-
-    if (x == xe && y == ye)
+    //cout << '[' << r << ',' << c << ']' << '\n';
+    if(r == a && c == b)
     {
-        return true;
+        a = 999;
+        return 1;
     }
-    if (visited[x][y] == false && adj[x][y] != '#')
+    if(seen[r][c])
     {
-        // cout << x+1 << ',' << y+1 << '\n';
-        visited[x][y] = true;
-        if (door == false && adj[x][y] == 'O')
+        return 1;
+    }
+    else
+    {
+        seen[r][c] = 1;
+    }
+    if(m[r][c] == '.')
+    {
+        if(r+1 <= n)
         {
-            // cout << "gu ger door";
-            door = true;
+            gogo(r+1,c,o,m);
         }
-        else if (door == true && adj[x][y] == 'O')
+        if(c+1 <= n)
         {
-            // cout << "gu return";
-            return false;
+            gogo(r,c+1,o,m);
         }
-        if (x + 1 < n)
+        if(r-1 > 0)
         {
-            if (dfs(x + 1, y, xe, ye, door, visited) == true)
-            {
-                return true;
-            }
+            gogo(r-1,c,o,m);
         }
-        if (y + 1 < n)
+        if(c-1 > 0)
         {
-            if (dfs(x, y + 1, xe, ye, door, visited) == true)
-            {
-                return true;
-            }
-        }
-        if (y - 1 >= 0)
-        {
-            if (dfs(x, y - 1, xe, ye, door, visited) == true)
-            {
-                return true;
-            }
-        }
-        if (x - 1 >= 0)
-        {
-            if (dfs(x - 1, y, xe, ye, door, visited) == true)
-            {
-                return true;
-            }
+            gogo(r,c-1,o,m);
         }
     }
-    return false;
+    else if (m[r][c] == 'O')
+    {
+        if(o+1 < 2)
+        {
+            
+            seen[r][c] = 0;
+            o++;
+            m[r][c] = '.';
+            gogo(r,c,o,m);
+        }
+    }
+    else
+    {
+        if(a == 999)
+        {
+            return 1;
+        }
+        return 0;
+    }
+    if(a == 999)
+    {
+        return 1;
+    }
+    return 0;
 }

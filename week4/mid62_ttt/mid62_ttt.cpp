@@ -1,96 +1,53 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int n;
-bool is_bipa(vector<vector<int>> map);
+int n,m;
+void is_bipa();
+int ttt[1001][1001];
+int bi[1001];
+set<int> seen;
+queue<int> q;
 int main()
 {
-    int m, a, b;
+    int a, b;
     cin >> n >> m;
-    vector<vector<int>> graph;
     for (int i = 0; i < n; i++)
     {
-        vector<int> temp;
-        graph.push_back(temp);
-    }
-    for (int i = 0; i < m; i++)
-    {
         cin >> a >> b;
-        graph[a - 1].push_back(b - 1);
-        graph[b - 1].push_back(a - 1);
+        ttt[a][b] = 1;
     }
-    is_bipa(graph);
+    bi[1] = 1;
+    is_bipa();
 }
 
-bool is_bipa(vector<vector<int>> graph)
-{
-    int v[graph.size()];
-    int parent[graph.size()];
-    for (int i = 0; i < graph.size(); i++)
+void is_bipa()
+{   
+    for(int u = 1; u <= n; u++)
     {
-        v[i] = -1;
-    }
-    for (int i = 0; i < graph.size(); i++)
-    {
-        if (v[i] == -1)
+        for(int i = 1; i <= n; i++)
         {
-            v[i] = 0;
-            list<int> q;
-            q.push_back(i);
-            list<int> layerC;
-            layerC.push_back(1);
-            int countlayer = 0;
-            vector<int> count(n, 0);
-            while (!q.empty())
+            if(ttt[u][i] == 1 && (bi[i] == 0 || bi[i] == bi[u]))
             {
-                countlayer++;
-                if (countlayer == *layerC.begin())
+                q.push(i);
+                if(bi[u] == bi[i])
                 {
-                    layerC.pop_front();
-                    vector<int> count(n, 0);
-                    countlayer = 0;
+                    if(seen.find(u) == seen.end() || seen.find(i) == seen.end() )
+                    {
+                        seen.insert(i);
+                        seen.insert(u);
+                        cout << u << ' ' << i << '\n';
+                    }
+
                 }
-                int ind = q.front();
-                q.pop_front();
-                int minicount = 0;
-                for (auto it : graph[ind])
+                else if(bi[u] == 1)
                 {
-                    if (v[it] == -1)
-                    {
-                        // cout << ind+1 << ',' << it+1;
-                        // cout << '\n';
-                        parent[it] = ind;
-                        minicount++;
-                        v[it] = !v[ind];
-                        q.push_back(it);
-                    }
-                    else if (v[it] == v[ind])
-                    {
-                        count[it]++;
-                        count[ind]++;
-                        if (count[it] == 2)
-                        {
-                            cout << parent[it] + 1 << ' ' << it + 1;
-                            return false;
-                        }
-                        else if (count[ind] == 2)
-                        {
-                            cout << parent[ind] + 1 << ' ' << ind + 1;
-                            return false;
-                        }
-                    }
+                    bi[i] = 2;
                 }
-                layerC.push_back(minicount);
-                for (int c = 0; c < n; c++)
+                else if(bi[u] == 2)
                 {
-                    if (count[c] == 1)
-                    {
-                        cout << parent[c] + 1 << ' ' << c + 1;
-                        return false;
-                    }
+                    bi[i] = 1;
                 }
             }
         }
     }
-    return true;
 }
