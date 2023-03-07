@@ -2,22 +2,28 @@
 #include <vector>
 #include <list>
 #include <array>
+#include <queue>
 using namespace std;
 
+int S, T, A, B;
+
 void print_map(vector<vector<int>> map);
-int bfs(vector<vector<int>> map, int s, int t);
+void bfs();
+int layer[100001];
 int M, N;
+vector<int> fac;
+vector<int> sup;
+vector<vector<int>> map;
 int main()
 {
-    int S, T, A, B;
-    vector<int> fac;
-    vector<int> sup;
+
     cin >> N >> M >> S >> T;
-    vector<vector<int>> map;
-    for (int i = 0; i < N+1; i++)
+
+    for (int i = 0; i < N + 1; i++)
     {
         vector<int> temp;
         map.push_back(temp);
+        layer[1 + i] = 2000000000;
     }
     for (int i = 0; i < M; i++)
     {
@@ -25,7 +31,7 @@ int main()
         map[A].push_back(B);
         map[B].push_back(A);
     }
-    //print_map(map);
+    // print_map(map);
     for (int i = 0; i < S; i++)
     {
         cin >> A;
@@ -36,53 +42,32 @@ int main()
         cin >> A;
         fac.push_back(A);
     }
-    for (int i = 0; i < T; i++)
+    bfs();
+    for(auto i: fac)
     {
-        int min = 2000000000;
-        for (int j = 0; j < S; j++)
-        {
-            int total = bfs(map,fac[i],sup[j]);
-            if (min > total)
-            {
-                min = total;
-            }
-            //cout << total << '\n';
-        }
-        cout << min << '\n';
+        cout << layer[i] << '\n';
     }
 }
 
-int bfs(vector<vector<int>> map, int s, int t)
+void bfs()
 {
-    bool visited[N+1];
-    list<int> q;
-    int layer[N+1];
-    layer[s] = 0;
-    q.push_back(s);
-    for (int i = 0; i < N+1; i++)
+    queue<int> q;
+    for (auto i : sup)
     {
-        visited[i] = false;
+        q.push(i);
+        layer[i] = 0;
     }
-    visited[s] = true;
     while (!q.empty())
     {
         int u = q.front();
-        //cout << layer[u];
-        q.pop_front();
-        //cout << '[' << u << ',' << t << ']';
-        if(u == t)
+        q.pop();
+        int l = layer[u] + 1;
+        for (auto m : map[u])
         {
-            return layer[u];
-        }
-        
-        for (int i = 0; i < map[u].size(); i++)
-        {
-            int v = map[u][i];
-            if (visited[v] == false)
+            if (layer[m] > layer[u] + 1)
             {
-                layer[v] = layer[u]+1;
-                q.push_back(v);
-                visited[v] = true;
+                layer[m] = layer[u] + 1;
+                q.push(m);
             }
         }
     }
