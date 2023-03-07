@@ -1,70 +1,80 @@
-#include <iostream>
-#include <set>
+#include <bits/stdc++.h>
 using namespace std;
 
+bool is_bipa();
+int col[100001];
+int bi[100001];
+set<pair<int,int>> p;
+vector<int> adj[100001];
+int n, m, a, b;
 int main()
 {
-    int n, m, a, b;
-    bool end = false;
-    int count = 0;
     cin >> n >> m;
-    set<int> teamA;
-    set<int> teamB;
-    for (int i = 0; i < m; i++)
+    bool f = 1;
+    cin >> a >> b;
+    adj[a].push_back(b);
+    adj[b].push_back(a);
+    col[a] = 1;
+    col[b] = 2;
+    for (int i = 2; i <= m; i++)
     {
-        /*
-        cout << 'A';
-        for (auto it = teamA.begin(); it != teamA.end(); ++it)
-        {
-            std::cout << *it << std::endl;
-        }
-        cout << 'B';
-        for (auto it = teamB.begin(); it != teamB.end(); ++it)
-        {
-            std::cout << *it << std::endl;
-        }
-        cout << end << '|' << '\n';
-        */
+        //cout << '[' << i << ']';
         cin >> a >> b;
-        if (end == true)
+
+        adj[a].push_back(b);
+        adj[b].push_back(a);
+        if (!is_bipa())
         {
-            continue;
+            cout << i - 1;
+            return 0;
         }
-        if (count == 0)
+    }
+    cout << m;
+}
+bool is_bipa()
+{
+    queue<int> q;
+    if(col[a] == 0)
+    {
+        if(col[b] == 1)
         {
-            teamA.insert(a);
-            teamB.insert(b);
-            count++;
-            continue;
+            col[a] = 2;
         }
-        
-        if (teamA.find(a) != teamA.end())
+        else if(col[b] == 2) 
         {
-            teamB.insert(b);
-        }
-        else if (teamA.find(b) != teamA.end())
-        {
-            teamB.insert(a);
-        }
-        else if (teamB.find(a) != teamB.end())
-        {
-            teamA.insert(b);
-        }
-        else if (teamB.find(b) != teamB.end())
-        {
-            teamA.insert(a);
-        }
+            col[a] = 1;
+        }   
         else
         {
-            teamA.insert(a);
-            teamB.insert(b);
-        }
-        if ((teamA.find(a) != teamA.end() && teamA.find(b) != teamA.end()) || (teamB.find(a) != teamB.end() && teamB.find(b) != teamB.end()))
-        {
-            end = true;
-            continue;
-        }
-        count++;
+            p.insert({a,b});
+            return 1;
+        }     
     }
-    cout << count;
+    q.push(a);
+    while (!q.empty())
+    {
+        int u = q.front();
+        q.pop();
+        for (auto i : adj[u])
+        {
+            //cout << '[' << col[u] << ',' << col[504] << ']';
+            if (col[i] == 0)
+            {
+                q.push(i);
+                if (col[u] == 1)
+                {
+                    col[i] = 2;
+                }
+                else
+                {
+                    col[i] = 1;
+                }
+            }
+            if (col[i] == col[u])
+            {
+                return 0;
+            }
+        }
+    }
+    return 1;
 }
