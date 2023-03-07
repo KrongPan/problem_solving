@@ -1,37 +1,31 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int maxt = 10000;
+int n;
+vector<pair<int,int>> task;
 int main()
 {
-    int n, d, c;
-    int tp = 0;
-    int max = 0;
     cin >> n;
-    int  p[maxt+1];
-    for (int i = 0; i < maxt + 1; i++)
+    int a, b;
+    for(int i = 0; i < n; i++)
     {
-        p[i] = 0;
+        cin >> a >> b;
+        pair<int,int> temp;
+        temp.first = a;
+        temp.second = b;
+        task.push_back(temp);
     }
-    int td = 0;
-    for (int i = 0; i < n; i++)
+    sort(task.begin(), task.end());
+    int x = 0;
+    int max = 0;
+    for(auto i:task)
     {
-        cin >> d >> c;
-        p[d] = c;
-    }
-    for (int i = 1; i < maxt + 1; i++)
-    {
-        td += p[i];
-        int total = 0;
-        if (td - i - 10 > 0)
+        int pay;
+        x += i.second;
+        pay = (x-i.first-10)*1000;
+        if(pay > max)
         {
-            // cout << '[' << i << ']';
-            total = (td - i - 10) * 1000;
-            // cout << total << '\n';
-            if (total > max)
-            {
-                max = total;
-            }
+            max = pay;
         }
     }
     cout << max;
