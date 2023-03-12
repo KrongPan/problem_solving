@@ -1,5 +1,6 @@
-#include <iostream>
+#include <bits/stdc++.h>
 using namespace std;
+
 
 int main()
 {
@@ -39,41 +40,33 @@ int main()
     }
   }
   cin >> err;
-  if (x > 0 && y > 0)
+  //cout << x << ',' << y << '\n';
+  vector<pair<int,char>> dir;
+  dir.push_back({N,'N'});
+  dir.push_back({S,'S'});
+  dir.push_back({W,'W'});
+  dir.push_back({E,'E'});
+  sort(dir.begin(),dir.end());
+  while(err!= 0 && dir[0].first != 0)
   {
-    if (S + W < err)
-    {
-      err = -1 * (err - (S + W));
-    }
-  }
-  else if (x < 0 && y < 0)
+    err--;
+    dir[0].first--;
+  } 
+  while(err!= 0 && dir[1].first != 0)
   {
-    if (N + E < err)
-    {
-      err = -1 * (err - (N + E));
-    }
-  }
-  else if (x >= 0 && y < 0)
+    err--;
+    dir[1].first--;
+  } 
+  while(err!= 0 && dir[2].first != 0)
   {
-    if (S + E < err)
-    {
-      err = -1 * (err - (S + E));
-    }
-  }
-  else if (x < 0 && y >= 0)
+    err--;
+    dir[2].first--;
+  } 
+  while(err!= 0 && dir[3].first != 0)
   {
-    if (N + W < err)
-    {
-      err = -1 * (err - (N + W));
-    }
-  }
-  else
-  {
-    if (S + W < err)
-    {
-      err = N+S+W+E-err;
-    }
-  }
-  cout << 2 * (abs(x) + abs(y) + err);
+    err--;
+    dir[3].first--;
+  } 
+  cout << (dir[3].first+dir[2].first-dir[0].first-dir[1].first)*2;
   return 0;
 }
