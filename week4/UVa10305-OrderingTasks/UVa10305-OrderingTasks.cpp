@@ -1,10 +1,10 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+void topoSort(vector<vector<int>> graph, int V);
 int main()
 {  
-    int n,m,a,b;
-    
+    int n, m, a, b;
     while(true)
     {
         cin >> n >> m;
@@ -12,44 +12,62 @@ int main()
         {
             return 0;
         }
-        array<set<int>,101> w;
-        bool seen[101];
-        queue<int> ans;
-        queue<int> q;
-        for(int i = 0; i < m; i++)
+        vector<vector<int>> graph;
+        for (int i = 0; i < n; i++)
+        {
+            vector<int> temp;
+            graph.push_back(temp);
+        }
+        for (int i = 0; i < m; i++)
         {
             cin >> a >> b;
-            w[a].insert(b);
-            seen[b] = 1;
+            graph[a - 1].push_back(b - 1);
         }
-        for(int i = 1; i <= n; i++)
+        topoSort(graph, n);
+    }
+}
+void topoSort(vector<vector<int>> graph, int V)
+{
+
+    vector<int> in_degree(V, 0);
+    vector<int> ans;
+    for (int u = 0; u < V; u++)
+    {
+        for (int x : graph[u])
+            in_degree[x]++;
+    }
+
+    list<int> q;
+    for (int i = 0; i < V; i++)
+    {
+        if (in_degree[i] == 0)
         {
-            if(seen[i] == 0)
+            q.push_back(i);
+        }
+    }
+    while (!q.empty())
+    {
+        int u = q.front();
+        q.pop_front();
+        ans.push_back(u + 1);
+        for (int x : graph[u])
+        {
+            if (--in_degree[x] == 0)
             {
-                q.push(i);
-                seen[i] = 1;
+                q.push_back(x);
             }
         }
-        while(q.size() != 0)
+    }
+    if (ans.size() == graph.size())
+    {
+        for (int i : ans)
         {
-            int u = q.front();
-            q.pop();
-            if(seen[u])
-            {
-                seen[u] = 0;
-                ans.push(u);
-                for(auto j: w[u])
-                {
-                    q.push(j);
-                }
-            }
+            cout << i << ' ';
         }
-        while(ans.size() != 1)
-        {
-            cout << ans.front() << ' ';
-            ans.pop();
-        }
-        cout << ans.front();
         cout << '\n';
+    }
+    else
+    {
+        cout << "no";
     }
 }
