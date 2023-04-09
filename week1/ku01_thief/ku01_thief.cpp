@@ -1,25 +1,32 @@
-#include <iostream>
+#include <bits/stdc++.h>
 using namespace std;
 
+int N,K,T,loop;
 int main(){
-  int N,K,T,loop,count;
+  int count;
   count = 1;
   loop = 1;
   cin >> N >> K >> T;
-  while(loop != T){
+  while(loop != T)
+  {
     count++;
     loop += K;
     //cout << loop << "|||";
-    if (loop>N){
+    if (loop>N)
+    {
       loop %= N;
-    } else{
+    } 
+    else
+    {
       loop = loop;
     }
     //cout << loop << "\n";
-    if (loop==1){
+    if (loop==1)
+    {
       count--;
       break;
     }
   }
   cout << count;
+  return 0;
 }

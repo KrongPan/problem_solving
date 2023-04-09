@@ -1,9 +1,9 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int n,m;
-array<vector<array<int,3>>,1001> map;
+int m,n,k,h;
 int main()
 {
-    
+    cin >> n >> m >> k >> h;
+    cin
 }
